@@ -4,8 +4,7 @@ import Place from "./components/Place";
 import * as getPlace from "./components/Place";
 import React from "react";
 import Scores from "./components/Scores";
-import Save from "./components/Save";
-import Reset from "./components/Reset";
+import ButtonCom from "./ButtonCom";
 
 const bord = getPlace.bord;
 var numClicked;
@@ -43,6 +42,11 @@ function App() {
 
   function handleClickRESETgame() {
     for (let i = 0; i < 9; i++) bord[i] = " ";
+    localStorage.setItem(
+      "bord",
+      JSON.stringify([" ", " ", " ", " ", " ", " ", " ", " ", " ", "T"])
+    );
+    window.location.reload();
   }
 
   return (
@@ -53,17 +57,13 @@ function App() {
         </div>
         <h2>Turn player: {typePlayer}</h2>
         <div className="bnt">
-          <save-game classname="saveGame" name="save">
+          {/* <ButtonCom-game classname="saveGame" name="save">
             <div slot="saveGame">Save</div>
-          </save-game>
+          </ButtonCom-game> */}
 
-          <reset-game
-            className="resetGame"
-            name="reset"
-            onClick={handleClickRESETgame}
-          >
+          <Button-Component name="reset" onClick={handleClickRESETgame}>
             <div slot="resetGame">Reset</div>
-          </reset-game>
+          </Button-Component>
         </div>
       </div>
       <div className="bord" onClick={handleClick}>

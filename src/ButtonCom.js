@@ -1,9 +1,7 @@
-import * as getPlace from "./Place";
-
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
- .body-save button{
+ .body button{
  		border: 20px;
      border-color: white;
      border-radius: 5px;
@@ -14,12 +12,11 @@ template.innerHTML = `
      font-weight: bold;
   }
 </style>
-  <div class="body-save">
-    <button id="save-bord"><slot name="saveGame" /></button>
+  <div class="body">
+    <button id="grid-bord"><slot name="saveGame" /></button>
   </div>
 `;
 
-let buttonVal;
 class ButtonCom extends HTMLElement {
   constructor() {
     super();
@@ -28,22 +25,15 @@ class ButtonCom extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  saveBord() {
-    const bord = getPlace.bord;
-    console.log(buttonVal);
-    localStorage.setItem("bord", JSON.stringify(bord));
-  }
-
   connectedCallback() {
-    buttonVal = this.attributes.name.value;
     this.shadowRoot
-      .querySelector("#save-bord")
+      .querySelector("#grid-bord")
       .addEventListener("click", () => this.saveBord());
   }
   disconnectedCallback() {
-    this.shadowRoot.querySelector("#save-bord").removeEventListener();
+    this.shadowRoot.querySelector("#grid-bord").removeEventListener();
   }
 }
-window.customElements.define("ButtonCom-game", ButtonCom);
+window.customElements.define("Button-Component", ButtonCom);
 
 export default ButtonCom;
