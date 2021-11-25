@@ -13,7 +13,7 @@ template.innerHTML = `
   }
 </style>
   <div class="body">
-    <button id="grid-bord"><slot name="saveGame" /></button>
+    <button id="grid-bord"><slot name="compButton" /></button>
   </div>
 `;
 
@@ -25,15 +25,15 @@ class ButtonCom extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  connectedCallback() {
-    this.shadowRoot
-      .querySelector("#grid-bord")
-      .addEventListener("click", () => this.saveBord());
-  }
-  disconnectedCallback() {
-    this.shadowRoot.querySelector("#grid-bord").removeEventListener();
-  }
+  // connectedCallback() {
+  //   this.shadowRoot
+  //     .querySelector("#grid-bord")
+  //     .addEventListener("click", () => handleClickSAVEgame());
+  // }
+  // disconnectedCallback() {
+  //   this.shadowRoot.querySelector("#grid-bord").removeEventListener();
+  // }
 }
-window.customElements.define("Button-Component", ButtonCom);
+window.customElements.define("button-component", ButtonCom);
 
 export default ButtonCom;
