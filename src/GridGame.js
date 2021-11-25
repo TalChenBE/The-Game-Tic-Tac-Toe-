@@ -10,7 +10,7 @@ template.innerHTML = `
   width: 310px;
   height: 310px;
   display: grid;
-  grid-template-columns: repeat(3, 100px);
+  grid-template-columns: repeat(3, 100px); 
   grid-template-rows: repeat(3, 1fr);
   column-gap: 5px;
   row-gap: 5px;
@@ -35,4 +35,5 @@ class GridGame extends HTMLElement {
 }
 window.customElements.define("grid-game", GridGame);
 
+export { GridGame };
 export default GridGame;

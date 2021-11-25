@@ -50,8 +50,8 @@ function App() {
     localStorage.setItem("scoreO", "0");
     window.location.reload();
   }
+
   function handleClickSAVEgame() {
-    console.log("sd");
     localStorage.setItem("bord", JSON.stringify(bord));
     localStorage.setItem("tie", JSON.stringify(numsTie));
     localStorage.setItem("scoreX", JSON.stringify(numsWinX));
