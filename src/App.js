@@ -1,15 +1,18 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 // import Place from "./components/Place";
-import * as getBord from "./components/Place";
+import * as getBord from "./OnePlace";
 import React from "react";
 import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
 import GridGame from "./GridGame.js";
+import OnePlace from "./OnePlace";
 
 var bord = getBord.bord;
+
 const sizeBord = getBord.sizeBord;
 var numClicked;
+// var namePlayer = "X";
 
 function App() {
   const [typePlayer, setTypePlayer] = useState("X");
@@ -17,7 +20,11 @@ function App() {
   const [numsTie, setNumsTie] = useState(0);
   const [numsWinO, setNumsWinO] = useState(0);
 
+  const [try1, setTry1] = useState(true);
+
+  // namePlayer = typePlayer;
   function handleClick() {
+    let flag = true;
     if (typePlayer === "X") {
       setTypePlayer("O");
     } else {
@@ -25,38 +32,51 @@ function App() {
     }
 
     numClicked = getBord.numClicked;
-    if (numClicked === sizeBord) {
+    var retval = isWin(bord);
+    if (retval === "X" || retval === "O") {
+      resetGame("Congratulations " + retval + " won!", retval);
+      if (retval === "X") setNumsWinX(numsWinX + 1);
+      else setNumsWinO(numsWinO + 1);
+      flag = false;
+    }
+    if (numClicked === sizeBord && flag) {
       resetGame(" TIE ", null);
       setNumsTie(numsTie + 1);
-    } else {
-      var retval = isWin(bord);
-      if (retval === "X" || retval === "O") {
-        resetGame("Congratulations " + retval + " won!", retval);
-        if (retval === "X") setNumsWinX(numsWinX + 1);
-        else setNumsWinO(numsWinO + 1);
-      }
     }
   }
 
   function handleClickRESETgame() {
-    bord = bord.map((element) => " ");
-    // for (let i = 0; i < 9; i++) bord[i] = " ";
-    localStorage.setItem(
-      "bord",
-      JSON.stringify([" ", " ", " ", " ", " ", " ", " ", " ", " ", "T"])
-    );
+    bord = bord.map(() => " ");
+    bord[sizeBord] = "T";
+    // for (let i = 0; i <sizeBord ; i++) bord[i] = " ";
+    localStorage.setItem("bord", JSON.stringify(bord));
     localStorage.setItem("tie", "0");
     localStorage.setItem("scoreX", "0");
     localStorage.setItem("scoreO", "0");
     window.location.reload();
   }
-
   function handleClickSAVEgame() {
     localStorage.setItem("bord", JSON.stringify(bord));
     localStorage.setItem("tie", JSON.stringify(numsTie));
     localStorage.setItem("scoreX", JSON.stringify(numsWinX));
     localStorage.setItem("scoreO", JSON.stringify(numsWinO));
   }
+  // const gridRef = useRef(0);
+
+  // addEventListener("click", () => handleClickPlace());
+  // function handleClickPlace() {
+  //   console.log("click!");
+  //}
+  // gridRef.addEventListener("click", () => this.handleClickPlace());
+  if (document.querySelector("grid-game") !== null)
+    document.querySelector("grid-game").addEventListener("check", () => {
+      console.log("123!!");
+    });
+  // useEffect(() => {
+  //   gridRef.current.addEventListener("handleEventPlace", (ev) => {
+  //     console.log("APP click!");
+  //   });
+  // });
 
   return (
     <div className="App">
@@ -74,17 +94,16 @@ function App() {
           </button-component>
         </div>
       </div>
-      <div onClick={handleClick}>
-        {/* <Place className="b1" name="0" player={typePlayer} />
-        <Place className="b2" name="1" player={typePlayer} />
-        <Place className="b3" name="2" player={typePlayer} />
-        <Place className="b4" name="3" player={typePlayer} />
-        <Place className="b5" name="4" player={typePlayer} />
-        <Place className="b6" name="5" player={typePlayer} />
-        <Place className="b7" name="6" player={typePlayer} />
-        <Place className="b8" name="7" player={typePlayer} />
-        <Place className="b9" name="8" player={typePlayer} /> */}
-        <grid-game className="grid-game"></grid-game>
+      <div className="bord" onClick={handleClick}>
+        <grid-game
+          name={typePlayer}
+          className="grid-game"
+          onClick={handleClick}
+          onClickPlace={() => {
+            console.log("123123123");
+          }}
+          //ref={gridRef}
+        ></grid-game>
       </div>
       <div></div>
 
@@ -106,9 +125,11 @@ function App() {
 function isWin(bord1) {
   var win = true,
     player;
+
   const sqrtSizeBord = Math.sqrt(sizeBord, 2);
+  // console.log(sqrtSizeBord);
   //check if ther is a win in row
-  for (let i = 0; i < sqrtSizeBord; i += sizeBord) {
+  for (let i = 0; i < sqrtSizeBord; i += 3) {
     player = bord1[i];
     win = true;
     for (let j = i; j < sqrtSizeBord; j++) {
@@ -154,12 +175,13 @@ function isWin(bord1) {
 
 function resetGame(msg) {
   alert(msg);
-  for (let i = 0; i < sizeBord; i++) bord[i] = " ";
-  localStorage.setItem(
-    "bord",
-    JSON.stringify([" ", " ", " ", " ", " ", " ", " ", " ", " ", "T"])
-  );
+  bord = bord.map(() => " ");
+  bord[sizeBord] = "T";
+  // for (let i = 0; i <sizeBord ; i++) bord[i] = " ";
+  localStorage.setItem("bord", JSON.stringify(bord));
   bord[sizeBord] = "F";
 }
+
+// export { namePlayer };
 
 export default App;

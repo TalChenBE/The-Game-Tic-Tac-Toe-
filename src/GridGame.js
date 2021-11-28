@@ -1,39 +1,42 @@
-import Place from "./components/Place";
+// import Place from "./components/Place";
 import * as getBord from "./components/Place";
+import * as getPlayer from "./App";
+import PlaceWEB from "./OnePlace";
+import "./GridGame.css";
 
-const sizeBord = getBord.sizeBord;
-const template = document.createElement("template");
-template.innerHTML = `
-<style>
- .body {
-  margin: auto;
-  width: 310px;
-  height: 310px;
-  display: grid;
-  grid-template-columns: repeat(3, 100px); 
-  grid-template-rows: repeat(3, 1fr);
-  column-gap: 5px;
-  row-gap: 5px;
-  align-items: start;
-  background-color: white;
-}
-  }
-</style> `;
+// var typePlayer = getPlayer.namePlayer;
+// const sizeBord = getBord.sizeBord;
+var numClicked = 0;
+var initBord = localStorage.getItem("bord");
+initBord = JSON.parse(initBord);
+const sizeBord = 9;
 
+var emptyBord = [];
+for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
+emptyBord[sizeBord] = "T";
+
+const bord = initBord ?? emptyBord;
+var typePlayer = "X";
 class GridGame extends HTMLElement {
   constructor() {
     super();
-    let el = ``;
-    for (let i = 0; i < sizeBord; i++) {
-      el += `<Place name=${i} player="X"></Place>`;
-    }
-    template.innerHTML += `<div class=bord> ${el} </div>`;
+  }
 
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  connectedCallback() {
+    var onClickPlace = this.getAttribute("onClickPlace");
+    var gridRef = this.getAttribute("ref");
+    let el = ``;
+    typePlayer = this.getAttribute("name");
+    for (let i = 0; i < sizeBord; i++) {
+      el += `<place-component id="placeBtn" name=${i} typePlayer=${typePlayer} onClickPlace="check"></place-component>`;
+    }
+    this.innerHTML += `<div class="body"> ${el} </div>`;
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log("grid - typeplayer change!" + name, oldValue, newValue);
   }
 }
 window.customElements.define("grid-game", GridGame);
 
-export { GridGame };
 export default GridGame;
