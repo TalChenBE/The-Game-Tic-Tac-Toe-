@@ -1,4 +1,10 @@
 # add a name - style login
+# good web to lern
+https://learn.vonage.com/blog/2020/10/07/using-web-components-in-a-react-application-dr/
+https://www.grapecity.com/blogs/using-web-components-with-react-2019
+
+
+
 
 
 # Getting Started with Create React App
