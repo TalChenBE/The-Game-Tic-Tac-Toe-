@@ -3,7 +3,7 @@ import * as getPlayer from "../App";
 import OnePlace from "./OnePlace";
 import "./GridGame.css";
 
-var numClicked = 0;
+// var numClicked = 0;
 var initBord = localStorage.getItem("bord");
 initBord = JSON.parse(initBord);
 const sizeBord = 9;

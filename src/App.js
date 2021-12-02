@@ -27,13 +27,6 @@ function App() {
   const [numsTie, setNumsTie] = useState(saveTie ?? initTie ?? 0);
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
 
-  function resetGrid() {
-    // setTimeout(() => {
-    setNumsWinX(savescoreX);
-    setNumsTie(saveTie);
-    setNumsWinO(savescoreO);
-    // }, 10000);
-  }
   function handleClick() {
     let flag = true;
     let index = getFunc.index;
@@ -176,7 +169,7 @@ function isWin(bord1) {
   //check if ther is a win in the main diagonal
   player = bord1[sqrtSizeBord - 1];
   win = true;
-  for (let i = sqrtSizeBord - 1; i < sizeBord; i += sqrtSizeBord - 1) {
+  for (let i = sqrtSizeBord - 1; i < sqrtSizeBord * 2; i += sqrtSizeBord - 1) {
     if (bord1[i] !== player) win = false;
   }
   if (player !== " " && win === true) {
@@ -193,7 +186,6 @@ function resetGame(msg, numsWinX, numsTie, numsWinO) {
   localStorage.setItem("bord", JSON.stringify(bord));
   bord[sizeBord] = "F";
   numClicked = 0;
-  console.log("App, numClicked = " + numClicked);
   localStorage.setItem("SavescoreX", JSON.stringify(numsWinX));
   localStorage.setItem("saveTie", JSON.stringify(numsTie));
   localStorage.setItem("SavescoreO", JSON.stringify(numsWinO));

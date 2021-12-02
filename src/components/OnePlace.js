@@ -16,7 +16,6 @@ for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
 emptyBord[sizeBord] = "T";
 
 const bord = initBord ?? emptyBord;
-console.log("size: " + sizeBord + ", board: " + bord);
 
 var index;
 
@@ -67,7 +66,6 @@ class OnePlace extends HTMLElement {
     index = this.getAttribute("name");
     if (bord[index] === " ") {
       bord[index] = typePlayer;
-      console.log(` numClicked = ${numClicked} sizeBoers: ${sizeBord} `);
       if (numClicked === sizeBord - 1) {
         setTimeout(() => {
           bord[sizeBord] = "T";
