@@ -1,20 +1,22 @@
 import "./OnePlace.css";
-import * as getPlayer from "./App";
+import * as getPlayer from "../App.js";
+import * as getSizeBord from "./GridGame";
 
 const template = document.createElement("template");
 
-var typePlayer;
-// const namePlayer = getPlayer.namePlayer;
-var numClicked = 0;
-var initBord = localStorage.getItem("bord");
+var typePlayer,
+  numClicked = 0,
+  index,
+  initBord = localStorage.getItem("bord");
 initBord = JSON.parse(initBord);
-const sizeBord = 9;
+const sizeBord = getSizeBord.sizeBord;
 
 var emptyBord = [];
 for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
 emptyBord[sizeBord] = "T";
 
 const bord = initBord ?? emptyBord;
+console.log("size: " + sizeBord + ", board: " + bord);
 
 var index;
 
@@ -32,8 +34,7 @@ const style = `<style>
   .place-button:hover {
     background-color: rgba(3, 3, 32, 0.884);
     font-style: italic;
-    color: transparent;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    
   }
 
   .place-button:focus {
@@ -43,7 +44,6 @@ const style = `<style>
 
 function setPlayerTypePlace(player) {
   typePlayer = player;
-  console.log("OnePlace view " + typePlayer);
 }
 
 class OnePlace extends HTMLElement {
@@ -64,20 +64,20 @@ class OnePlace extends HTMLElement {
   }
 
   placebutton() {
-    let index = this.getAttribute("name");
+    index = this.getAttribute("name");
     if (bord[index] === " ") {
-      console.log("get: " + index);
       bord[index] = typePlayer;
-      if (bord[sizeBord] === "F") {
-        numClicked = 0;
-        bord[sizeBord] = "T";
+      console.log(` numClicked = ${numClicked} sizeBoers: ${sizeBord} `);
+      if (numClicked === sizeBord - 1) {
+        setTimeout(() => {
+          bord[sizeBord] = "T";
+        }, 1000);
       }
       numClicked++;
-      //console.log("bord: " + bord);
+
       const btn = this.shadowRoot.getElementById("placeButton");
       btn.innerText = bord[index];
     }
-    // this.shadowRoot.querySelector("#placeButton").ariaValueText = "W";
   }
 
   connectedCallback() {
@@ -85,18 +85,12 @@ class OnePlace extends HTMLElement {
       .querySelector("#placeButton")
       .addEventListener("click", () => this.placebutton());
   }
-  setPlayerType() {
-    if (typePlayer === "X") {
-      typePlayer = "O";
-    } else {
-      typePlayer = "X";
-    }
-  }
+
   disconnectedCallback() {
     this.shadowRoot.querySelector("#place-button").removeEventListener();
   }
 }
 window.customElements.define("place-component", OnePlace);
 
-export { bord, numClicked, sizeBord, setPlayerTypePlace };
+export { bord, numClicked, sizeBord, setPlayerTypePlace, index };
 export default OnePlace;

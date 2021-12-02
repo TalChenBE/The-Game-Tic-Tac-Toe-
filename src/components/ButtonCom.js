@@ -24,15 +24,6 @@ class ButtonCom extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
-
-  // connectedCallback() {
-  //   this.shadowRoot
-  //     .querySelector("#grid-bord")
-  //     .addEventListener("click", () => handleClickSAVEgame());
-  // }
-  // disconnectedCallback() {
-  //   this.shadowRoot.querySelector("#grid-bord").removeEventListener();
-  // }
 }
 window.customElements.define("button-component", ButtonCom);
 

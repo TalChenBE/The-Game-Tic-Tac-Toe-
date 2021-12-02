@@ -1,54 +1,81 @@
 import "./App.css";
 import { useState, useEffect, useRef } from "react";
-// import Place from "./components/Place";
-import * as getBord from "./OnePlace";
+import * as getBord from "./components/OnePlace";
 import React from "react";
 import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
-import GridGame from "./GridGame.js";
-import OnePlace from "./OnePlace";
-import * as getFunc from "./OnePlace";
+import GridGame from "./components/GridGame.js";
+import OnePlace from "./components/OnePlace";
+import * as getFunc from "./components/OnePlace";
 
-var bord = getBord.bord;
-
+var bord = getBord.bord,
+  typePlayer = "X",
+  numClicked;
 const sizeBord = getBord.sizeBord;
-var numClicked;
-
-var typePlayer = "X";
 
 function App() {
-  const [player, setPlayer] = useState("X");
-  const [numsWinX, setNumsWinX] = useState(0);
-  const [numsTie, setNumsTie] = useState(0);
-  const [numsWinO, setNumsWinO] = useState(0);
+  var initTie = JSON.parse(localStorage.getItem("tie"));
+  var initScoreX = JSON.parse(localStorage.getItem("scoreX"));
+  var initScoreO = JSON.parse(localStorage.getItem("scoreO"));
 
-  // namePlayer = typePlayer;
+  var saveTie = JSON.parse(localStorage.getItem("saveTie")),
+    savescoreX = JSON.parse(localStorage.getItem("SavescoreX")),
+    savescoreO = JSON.parse(localStorage.getItem("SavescoreO"));
+
+  const [player, setPlayer] = useState("X");
+  const [numsWinX, setNumsWinX] = useState(savescoreX ?? initScoreX ?? 0);
+  const [numsTie, setNumsTie] = useState(saveTie ?? initTie ?? 0);
+  const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
+
+  function resetGrid() {
+    // setTimeout(() => {
+    setNumsWinX(savescoreX);
+    setNumsTie(saveTie);
+    setNumsWinO(savescoreO);
+    // }, 10000);
+  }
   function handleClick() {
     let flag = true;
-    if (typePlayer === "X") {
-      typePlayer = "O";
-      // setTypePlayer("O");
-    } else {
-      //  setTypePlayer("X");
-      typePlayer = "X";
+    let index = getFunc.index;
+    if (bord[index] === typePlayer) {
+      if (typePlayer === "X") {
+        typePlayer = "O";
+        setPlayer("O");
+      } else {
+        typePlayer = "X";
+        setPlayer("X");
+      }
     }
 
     numClicked = getBord.numClicked;
     var retval = isWin(bord);
     if (retval === "X" || retval === "O") {
-      resetGame("Congratulations " + retval + " won!", retval);
-      if (retval === "X") setNumsWinX(numsWinX + 1);
-      else setNumsWinO(numsWinO + 1);
+      if (retval === "X") {
+        resetGame(
+          `Congratulations ${retval} won!`,
+          numsWinX + 1,
+          numsTie,
+          numsWinO
+        );
+        setNumsWinX(numsWinX + 1);
+      } else {
+        resetGame(
+          `Congratulations ${retval} won!`,
+          numsWinX,
+          numsTie,
+          numsWinO + 1
+        );
+        setNumsWinO(numsWinO + 1);
+      }
       flag = false;
     }
     if (numClicked === sizeBord && flag) {
-      resetGame(" TIE ", null);
+      resetGame(" TIE ", numsWinX, numsTie + 1, numsWinO);
       setNumsTie(numsTie + 1);
     }
   }
 
   const listener = () => {
-    console.log("state in handler: " + typePlayer);
     getFunc.setPlayerTypePlace(typePlayer);
   };
   React.useEffect(() => {
@@ -58,11 +85,10 @@ function App() {
   function handleClickRESETgame() {
     bord = bord.map(() => " ");
     bord[sizeBord] = "T";
-    // for (let i = 0; i <sizeBord ; i++) bord[i] = " ";
-    localStorage.setItem("bord", JSON.stringify(bord));
-    localStorage.setItem("tie", "0");
-    localStorage.setItem("scoreX", "0");
-    localStorage.setItem("scoreO", "0");
+    setNumsWinX(0);
+    setNumsTie(0);
+    setNumsWinO(0);
+    localStorage.clear();
     window.location.reload();
   }
   function handleClickSAVEgame() {
@@ -71,23 +97,6 @@ function App() {
     localStorage.setItem("scoreX", JSON.stringify(numsWinX));
     localStorage.setItem("scoreO", JSON.stringify(numsWinO));
   }
-  // const gridRef = useRef(0);
-
-  // addEventListener("click", () => handleClickPlace());
-  // function handleClickPlace() {
-  //   console.log("click!");
-  //}
-  // gridRef.addEventListener("click", () => this.handleClickPlace());
-  // if (document.querySelector("grid-game") !== null)
-  //   document.querySelector("grid-game").addEventListener("check", () => {
-  //     console.log("123!!");
-  //   });
-  // useEffect(() => {
-  //   gridRef.current.addEventListener("handleEventPlace", (ev) => {
-  //     console.log("APP click!");
-  //   });
-  // });
-
   return (
     <div className="App">
       <div className="heder">
@@ -112,7 +121,6 @@ function App() {
         ></grid-game>
       </div>
       <div></div>
-
       <users-scores className="userScores">
         <div slot="px" value={numsWinX}>
           {numsWinX}
@@ -133,13 +141,12 @@ function isWin(bord1) {
     player;
 
   const sqrtSizeBord = Math.sqrt(sizeBord, 2);
-  // console.log(sqrtSizeBord);
   //check if ther is a win in row
-  for (let i = 0; i < sqrtSizeBord; i += 3) {
+  for (let i = 0; i < sizeBord; i += sqrtSizeBord) {
     player = bord1[i];
     win = true;
-    for (let j = i; j < sqrtSizeBord; j++) {
-      if (bord1[j] !== player) win = false;
+    for (let j = 0; j < sqrtSizeBord; j++) {
+      if (bord1[j + i] !== player) win = false;
     }
     if (player !== " " && win === true) {
       return player;
@@ -179,15 +186,19 @@ function isWin(bord1) {
   return "nobady";
 }
 
-function resetGame(msg) {
+function resetGame(msg, numsWinX, numsTie, numsWinO) {
   alert(msg);
   bord = bord.map(() => " ");
   bord[sizeBord] = "T";
-  // for (let i = 0; i <sizeBord ; i++) bord[i] = " ";
   localStorage.setItem("bord", JSON.stringify(bord));
   bord[sizeBord] = "F";
-}
+  numClicked = 0;
+  console.log("App, numClicked = " + numClicked);
+  localStorage.setItem("SavescoreX", JSON.stringify(numsWinX));
+  localStorage.setItem("saveTie", JSON.stringify(numsTie));
+  localStorage.setItem("SavescoreO", JSON.stringify(numsWinO));
 
-// export { namePlayer };
+  window.location.reload();
+}
 
 export default App;
