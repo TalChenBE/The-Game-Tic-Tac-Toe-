@@ -41,34 +41,43 @@ const style = `<style>
   }
 </style>`;
 
-class PlaceWEB extends HTMLElement {
+function setPlayerTypePlace(player) {
+  typePlayer = player;
+  console.log("OnePlace view " + typePlayer);
+}
+
+class OnePlace extends HTMLElement {
   constructor() {
     super();
     index = parseInt(this.getAttribute("name"), 10);
     typePlayer = this.getAttribute("typePlayer");
-    var p = bord[index];
 
     template.innerHTML =
       style +
       ` <button id="placeButton" class="place-button" className="lala">
-     ${p}
-  </button>
-  `;
+          ${bord[index]}
+        </button>
+      `;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   placebutton() {
-    if (bord[this.getAttribute("name")] === " ") {
-      console.log("get: " + this.getAttribute("name"));
-      bord[this.getAttribute("name")] = this.getAttribute("typePlayer");
+    let index = this.getAttribute("name");
+    if (bord[index] === " ") {
+      console.log("get: " + index);
+      bord[index] = typePlayer;
       if (bord[sizeBord] === "F") {
         numClicked = 0;
         bord[sizeBord] = "T";
       }
       numClicked++;
+      //console.log("bord: " + bord);
+      const btn = this.shadowRoot.getElementById("placeButton");
+      btn.innerText = bord[index];
     }
+    // this.shadowRoot.querySelector("#placeButton").ariaValueText = "W";
   }
 
   connectedCallback() {
@@ -76,12 +85,18 @@ class PlaceWEB extends HTMLElement {
       .querySelector("#placeButton")
       .addEventListener("click", () => this.placebutton());
   }
-
+  setPlayerType() {
+    if (typePlayer === "X") {
+      typePlayer = "O";
+    } else {
+      typePlayer = "X";
+    }
+  }
   disconnectedCallback() {
     this.shadowRoot.querySelector("#place-button").removeEventListener();
   }
 }
-window.customElements.define("place-component", PlaceWEB);
+window.customElements.define("place-component", OnePlace);
 
-export { bord, numClicked, sizeBord };
-export default PlaceWEB;
+export { bord, numClicked, sizeBord, setPlayerTypePlace };
+export default OnePlace;

@@ -7,28 +7,30 @@ import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
 import GridGame from "./GridGame.js";
 import OnePlace from "./OnePlace";
+import * as getFunc from "./OnePlace";
 
 var bord = getBord.bord;
 
 const sizeBord = getBord.sizeBord;
 var numClicked;
-// var namePlayer = "X";
+
+var typePlayer = "X";
 
 function App() {
-  const [typePlayer, setTypePlayer] = useState("X");
+  const [player, setPlayer] = useState("X");
   const [numsWinX, setNumsWinX] = useState(0);
   const [numsTie, setNumsTie] = useState(0);
   const [numsWinO, setNumsWinO] = useState(0);
-
-  const [try1, setTry1] = useState(true);
 
   // namePlayer = typePlayer;
   function handleClick() {
     let flag = true;
     if (typePlayer === "X") {
-      setTypePlayer("O");
+      typePlayer = "O";
+      // setTypePlayer("O");
     } else {
-      setTypePlayer("X");
+      //  setTypePlayer("X");
+      typePlayer = "X";
     }
 
     numClicked = getBord.numClicked;
@@ -44,6 +46,14 @@ function App() {
       setNumsTie(numsTie + 1);
     }
   }
+
+  const listener = () => {
+    console.log("state in handler: " + typePlayer);
+    getFunc.setPlayerTypePlace(typePlayer);
+  };
+  React.useEffect(() => {
+    window.addEventListener("click", listener);
+  }, [typePlayer]);
 
   function handleClickRESETgame() {
     bord = bord.map(() => " ");
@@ -68,10 +78,10 @@ function App() {
   //   console.log("click!");
   //}
   // gridRef.addEventListener("click", () => this.handleClickPlace());
-  if (document.querySelector("grid-game") !== null)
-    document.querySelector("grid-game").addEventListener("check", () => {
-      console.log("123!!");
-    });
+  // if (document.querySelector("grid-game") !== null)
+  //   document.querySelector("grid-game").addEventListener("check", () => {
+  //     console.log("123!!");
+  //   });
   // useEffect(() => {
   //   gridRef.current.addEventListener("handleEventPlace", (ev) => {
   //     console.log("APP click!");
@@ -96,13 +106,9 @@ function App() {
       </div>
       <div className="bord" onClick={handleClick}>
         <grid-game
+          id="gridi"
           name={typePlayer}
           className="grid-game"
-          onClick={handleClick}
-          onClickPlace={() => {
-            console.log("123123123");
-          }}
-          //ref={gridRef}
         ></grid-game>
       </div>
       <div></div>

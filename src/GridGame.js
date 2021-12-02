@@ -16,7 +16,8 @@ for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
 emptyBord[sizeBord] = "T";
 
 const bord = initBord ?? emptyBord;
-var typePlayer = "X";
+var typePlayer;
+
 class GridGame extends HTMLElement {
   constructor() {
     super();
@@ -33,9 +34,9 @@ class GridGame extends HTMLElement {
     this.innerHTML += `<div class="body"> ${el} </div>`;
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    console.log("grid - typeplayer change!" + name, oldValue, newValue);
-  }
+  // attributeChangedCallback(name, oldValue, newValue) {
+  //   console.log("grid - typeplayer change!" + name, oldValue, newValue);
+  // }
 }
 window.customElements.define("grid-game", GridGame);
 
