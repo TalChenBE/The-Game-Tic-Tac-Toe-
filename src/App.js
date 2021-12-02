@@ -1,50 +1,102 @@
 import "./App.css";
-import { useState } from "react";
-import Place from "./components/Place";
-import * as getPlace from "./components/Place";
+import { useState, useEffect, useRef } from "react";
+import * as getBord from "./components/OnePlace";
 import React from "react";
 import Scores from "./components/Scores";
-import Save from "./components/Save";
-import Reset from "./components/Reset";
+import ButtonCom from "./components/ButtonCom";
+import GridGame from "./components/GridGame.js";
+import OnePlace from "./components/OnePlace";
+import * as getFunc from "./components/OnePlace";
 
-const bord = getPlace.bord;
-var numClicked;
+var bord = getBord.bord,
+  typePlayer = "X",
+  numClicked;
+const sizeBord = getBord.sizeBord;
 
 function App() {
-  const [typePlayer, setTypePlayer] = useState("X");
-  const [numsWinX, setNumsWinX] = useState(0);
-  const [numsTie, setNumsTie] = useState(0);
-  const [numsWinO, setNumsWinO] = useState(0);
+  var initTie = JSON.parse(localStorage.getItem("tie"));
+  var initScoreX = JSON.parse(localStorage.getItem("scoreX"));
+  var initScoreO = JSON.parse(localStorage.getItem("scoreO"));
 
+  var saveTie = JSON.parse(localStorage.getItem("saveTie")),
+    savescoreX = JSON.parse(localStorage.getItem("SavescoreX")),
+    savescoreO = JSON.parse(localStorage.getItem("SavescoreO"));
+
+  const [player, setPlayer] = useState("X");
+  const [numsWinX, setNumsWinX] = useState(savescoreX ?? initScoreX ?? 0);
+  const [numsTie, setNumsTie] = useState(saveTie ?? initTie ?? 0);
+  const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
+
+  function resetGrid() {
+    // setTimeout(() => {
+    setNumsWinX(savescoreX);
+    setNumsTie(saveTie);
+    setNumsWinO(savescoreO);
+    // }, 10000);
+  }
   function handleClick() {
-    if (typePlayer === "X") {
-      setTypePlayer("O");
-    } else {
-      setTypePlayer("X");
-    }
-
-    numClicked = getPlace.numClicked;
-    if (numClicked === 9) {
-      resetGame(" TIE ", null);
-      setNumsTie(numsTie + 1);
-    } else {
-      var retval = isWin([
-        [bord[0], bord[1], bord[2]],
-        [bord[3], bord[4], bord[5]],
-        [bord[6], bord[7], bord[8]],
-      ]);
-      if (retval === "X" || retval === "O") {
-        resetGame("Congratulations " + retval + " won!", retval);
-        if (retval === "X") setNumsWinX(numsWinX + 1);
-        else setNumsWinO(numsWinO + 1);
+    let flag = true;
+    let index = getFunc.index;
+    if (bord[index] === typePlayer) {
+      if (typePlayer === "X") {
+        typePlayer = "O";
+        setPlayer("O");
+      } else {
+        typePlayer = "X";
+        setPlayer("X");
       }
     }
+
+    numClicked = getBord.numClicked;
+    var retval = isWin(bord);
+    if (retval === "X" || retval === "O") {
+      if (retval === "X") {
+        resetGame(
+          `Congratulations ${retval} won!`,
+          numsWinX + 1,
+          numsTie,
+          numsWinO
+        );
+        setNumsWinX(numsWinX + 1);
+      } else {
+        resetGame(
+          `Congratulations ${retval} won!`,
+          numsWinX,
+          numsTie,
+          numsWinO + 1
+        );
+        setNumsWinO(numsWinO + 1);
+      }
+      flag = false;
+    }
+    if (numClicked === sizeBord && flag) {
+      resetGame(" TIE ", numsWinX, numsTie + 1, numsWinO);
+      setNumsTie(numsTie + 1);
+    }
   }
+
+  const listener = () => {
+    getFunc.setPlayerTypePlace(typePlayer);
+  };
+  React.useEffect(() => {
+    window.addEventListener("click", listener);
+  }, [typePlayer]);
 
   function handleClickRESETgame() {
-    for (let i = 0; i < 9; i++) bord[i] = " ";
+    bord = bord.map(() => " ");
+    bord[sizeBord] = "T";
+    setNumsWinX(0);
+    setNumsTie(0);
+    setNumsWinO(0);
+    localStorage.clear();
+    window.location.reload();
   }
-
+  function handleClickSAVEgame() {
+    localStorage.setItem("bord", JSON.stringify(bord));
+    localStorage.setItem("tie", JSON.stringify(numsTie));
+    localStorage.setItem("scoreX", JSON.stringify(numsWinX));
+    localStorage.setItem("scoreO", JSON.stringify(numsWinO));
+  }
   return (
     <div className="App">
       <div className="heder">
@@ -53,30 +105,22 @@ function App() {
         </div>
         <h2>Turn player: {typePlayer}</h2>
         <div className="bnt">
-          <save-game classname="saveGame" name="save">
-            <div slot="saveGame">Save</div>
-          </save-game>
-
-          <reset-game
-            className="resetGame"
-            name="reset"
-            onClick={handleClickRESETgame}
-          >
-            <div slot="resetGame">Reset</div>
-          </reset-game>
+          <button-component name="reset" onClick={handleClickRESETgame}>
+            <div slot="compButton">Reset</div>
+          </button-component>
+          <button-component name="save" onClick={handleClickSAVEgame}>
+            <div slot="compButton">Save</div>
+          </button-component>
         </div>
       </div>
       <div className="bord" onClick={handleClick}>
-        <Place className="b1" name="0" player={typePlayer} />
-        <Place className="b2" name="1" player={typePlayer} />
-        <Place className="b3" name="2" player={typePlayer} />
-        <Place className="b4" name="3" player={typePlayer} />
-        <Place className="b5" name="4" player={typePlayer} />
-        <Place className="b6" name="5" player={typePlayer} />
-        <Place className="b7" name="6" player={typePlayer} />
-        <Place className="b8" name="7" player={typePlayer} />
-        <Place className="b9" name="8" player={typePlayer} />
+        <grid-game
+          id="gridi"
+          name={typePlayer}
+          className="grid-game"
+        ></grid-game>
       </div>
+      <div></div>
       <users-scores className="userScores">
         <div slot="px" value={numsWinX}>
           {numsWinX}
@@ -96,48 +140,65 @@ function isWin(bord1) {
   var win = true,
     player;
 
+  const sqrtSizeBord = Math.sqrt(sizeBord, 2);
   //check if ther is a win in row
-  for (let i = 0; i < 3; i++) {
-    player = bord1[i][0];
+  for (let i = 0; i < sizeBord; i += sqrtSizeBord) {
+    player = bord1[i];
     win = true;
-    for (let j = 0; j < 3; j++) {
-      if (bord1[i][j] !== player) win = false;
+    for (let j = 0; j < sqrtSizeBord; j++) {
+      if (bord1[j + i] !== player) win = false;
     }
     if (player !== " " && win === true) {
       return player;
     }
   }
   //check if ther is a win in colomn
-  for (let i = 0; i < 3; i++) {
-    player = bord1[0][i];
+  for (let i = 0; i < sqrtSizeBord; i++) {
+    player = bord1[i];
     win = true;
-    for (let j = 0; j < 3; j++) {
-      if (bord1[j][i] !== player) win = false;
+    for (let j = i; j < sizeBord; j += sqrtSizeBord) {
+      if (bord1[j] !== player) win = false;
     }
     if (player !== " " && win === true) {
       return player;
     }
   }
-  //check if ther is a win in diagonal
-  player = bord1[1][1];
-  if (bord1[0][0] === player && player === bord1[2][2] && player !== " ") {
-    return bord1[0][0];
+  //check if ther is a win in the main diagonal
+  player = bord1[0];
+  win = true;
+  for (let i = 0; i < sizeBord; i += sqrtSizeBord + 1) {
+    if (bord1[i] !== player) win = false;
+  }
+  if (player !== " " && win === true) {
+    return player;
   }
 
-  if (bord1[0][2] === player && player === bord1[2][0] && player !== " ") {
-    return bord1[0][2];
+  //check if ther is a win in the main diagonal
+  player = bord1[sqrtSizeBord - 1];
+  win = true;
+  for (let i = sqrtSizeBord - 1; i < sizeBord; i += sqrtSizeBord - 1) {
+    if (bord1[i] !== player) win = false;
   }
+  if (player !== " " && win === true) {
+    return player;
+  }
+
   return "nobady";
 }
 
-function resetGame(msg) {
+function resetGame(msg, numsWinX, numsTie, numsWinO) {
   alert(msg);
-  for (let i = 0; i < 9; i++) bord[i] = " ";
-  localStorage.setItem(
-    "bord",
-    JSON.stringify([" ", " ", " ", " ", " ", " ", " ", " ", " ", "T"])
-  );
-  bord[9] = "F";
+  bord = bord.map(() => " ");
+  bord[sizeBord] = "T";
+  localStorage.setItem("bord", JSON.stringify(bord));
+  bord[sizeBord] = "F";
+  numClicked = 0;
+  console.log("App, numClicked = " + numClicked);
+  localStorage.setItem("SavescoreX", JSON.stringify(numsWinX));
+  localStorage.setItem("saveTie", JSON.stringify(numsTie));
+  localStorage.setItem("SavescoreO", JSON.stringify(numsWinO));
+
+  window.location.reload();
 }
 
 export default App;

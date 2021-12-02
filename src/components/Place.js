@@ -3,17 +3,23 @@ import "./Place.css";
 var numClicked = 0;
 var initBord = localStorage.getItem("bord");
 initBord = JSON.parse(initBord);
+const sizeBord = 9;
 
-const bord = initBord ?? [" ", " ", " ", " ", " ", " ", " ", " ", " ", "T"];
+var emptyBord = [];
+for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
+emptyBord[sizeBord] = "T";
+
+const bord = initBord ?? emptyBord;
 
 function Place(props) {
   function handleClick() {
     if (bord[props.name] === " ") {
       bord[props.name] = props.player;
-      if (bord[9] === "F") {
+      if (bord[sizeBord] === "F") {
         numClicked = 0;
-        bord[9] = "T";
+        bord[sizeBord] = "T";
       }
+      numClicked++;
     }
   }
 
@@ -23,5 +29,5 @@ function Place(props) {
     </button>
   );
 }
-export { bord, numClicked };
+export { bord, numClicked, sizeBord };
 export default Place;
