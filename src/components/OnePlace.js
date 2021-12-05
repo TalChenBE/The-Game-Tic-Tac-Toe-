@@ -25,13 +25,13 @@ const style = `<style>
     font-size: xx-large;
     width: 100px;
     height: 100px;
-    background: black;
+    background: rgba(0, 0, 0, 0.644);
     border: none;
     font-weight: bold;
   }
 
   .place-button:hover {
-    background-color: rgba(3, 3, 32, 0.884);
+    /*background-color: rgba(12, 12, 129, 0.384);*/
     font-style: italic;
     
   }

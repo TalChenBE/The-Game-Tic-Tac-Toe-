@@ -9,13 +9,16 @@ import OnePlace from "./components/OnePlace";
 import * as getFunc from "./components/OnePlace";
 import CoinFlip from "./components/CoinFlip.js";
 import * as getStartPlayer from "./components/CoinFlip";
+import PlayerX from "./PlayerX";
+import { Start } from "./Start";
 
 var bord = getBord.bord,
-  typePlayer = "X",
+  // typePlayer,
+  namep,
   numClicked;
 const sizeBord = getBord.sizeBord;
 
-function App() {
+function App(props) {
   var initTie = JSON.parse(localStorage.getItem("tie"));
   var initScoreX = JSON.parse(localStorage.getItem("scoreX"));
   var initScoreO = JSON.parse(localStorage.getItem("scoreO"));
@@ -24,7 +27,7 @@ function App() {
     savescoreX = JSON.parse(localStorage.getItem("SavescoreX")),
     savescoreO = JSON.parse(localStorage.getItem("SavescoreO"));
 
-  const [player, setPlayer] = useState("");
+  const [typePlayer, setPlayer] = useState(props.typePlayer);
   const [numsWinX, setNumsWinX] = useState(savescoreX ?? initScoreX ?? 0);
   const [numsTie, setNumsTie] = useState(saveTie ?? initTie ?? 0);
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
@@ -34,11 +37,17 @@ function App() {
     let index = getFunc.index;
     if (bord[index] === typePlayer) {
       if (typePlayer === "X") {
-        typePlayer = "O";
+        // typePlayer = "O";
+        console.log("im x");
         setPlayer("O");
+        console.log(typePlayer);
       } else {
-        typePlayer = "X";
+        console.log("im o");
+
+        // typePlayer = "X";
+
         setPlayer("X");
+        console.log(typePlayer);
       }
     }
 
@@ -94,22 +103,13 @@ function App() {
     localStorage.setItem("scoreO", JSON.stringify(numsWinO));
   }
 
-  function cionClick() {
-    setTimeout(() => {
-      typePlayer = getStartPlayer.player;
-      setPlayer(getStartPlayer.player);
-    }, 3200);
-  }
-
   return (
     <div className="App">
       <div className="heder">
         <div>
-          <h1 className="title">The Tic Tok Toe game</h1>
+          <h1 className="title">The Tic Tac Toe game</h1>
         </div>
-        <div onClick={cionClick}>
-          <CoinFlip></CoinFlip>
-        </div>
+
         <h2 className="title-turn">Turn player: {typePlayer}</h2>
         <div className="bnt">
           <button-component name="reset" onClick={handleClickRESETgame}>
@@ -207,5 +207,5 @@ function resetGame(msg, numsWinX, numsTie, numsWinO) {
   window.location.reload();
 }
 
-export { typePlayer };
+// export { typePlayer };
 export default App;

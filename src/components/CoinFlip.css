@@ -26,12 +26,12 @@ h1 {
     0 12px 20px -10px rgba(0, 0, 0, 0.4);
 }
 .side-a {
-  background-color: #0067bbb2;
+  /* background-color: rgb(12, 12, 129); */
   font: italic 3.5em "Fira Sans", serif;
   text-align: center;
 }
 .side-b {
-  background-color: #7400c2c9;
+  /* background-color: #7400c2c9; */
   text-align: center;
   font: italic 3.5em "Fira Sans", serif;
 }
