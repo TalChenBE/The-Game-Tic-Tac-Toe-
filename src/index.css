@@ -17,6 +17,12 @@
   text-align: center;
   margin-bottom: 50px;
 }
+.title {
+  font: italic small-caps bold 3em cursive;
+}
+.title-turn {
+  font: italic 2em "Fira Sans", serif;
+}
 /* 
 .bord {
   margin: auto;

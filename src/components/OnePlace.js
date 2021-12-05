@@ -53,7 +53,7 @@ class OnePlace extends HTMLElement {
 
     template.innerHTML =
       style +
-      ` <button id="placeButton" class="place-button" className="lala">
+      ` <button id="placeButton" class="place-button">
           ${bord[index]}
         </button>
       `;

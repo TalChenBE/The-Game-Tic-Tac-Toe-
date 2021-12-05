@@ -7,6 +7,8 @@ import ButtonCom from "./components/ButtonCom";
 import GridGame from "./components/GridGame.js";
 import OnePlace from "./components/OnePlace";
 import * as getFunc from "./components/OnePlace";
+import CoinFlip from "./components/CoinFlip.js";
+import * as getStartPlayer from "./components/CoinFlip";
 
 var bord = getBord.bord,
   typePlayer = "X",
@@ -22,7 +24,7 @@ function App() {
     savescoreX = JSON.parse(localStorage.getItem("SavescoreX")),
     savescoreO = JSON.parse(localStorage.getItem("SavescoreO"));
 
-  const [player, setPlayer] = useState("X");
+  const [player, setPlayer] = useState("");
   const [numsWinX, setNumsWinX] = useState(savescoreX ?? initScoreX ?? 0);
   const [numsTie, setNumsTie] = useState(saveTie ?? initTie ?? 0);
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
@@ -84,19 +86,31 @@ function App() {
     localStorage.clear();
     window.location.reload();
   }
+
   function handleClickSAVEgame() {
     localStorage.setItem("bord", JSON.stringify(bord));
     localStorage.setItem("tie", JSON.stringify(numsTie));
     localStorage.setItem("scoreX", JSON.stringify(numsWinX));
     localStorage.setItem("scoreO", JSON.stringify(numsWinO));
   }
+
+  function cionClick() {
+    setTimeout(() => {
+      typePlayer = getStartPlayer.player;
+      setPlayer(getStartPlayer.player);
+    }, 3200);
+  }
+
   return (
     <div className="App">
       <div className="heder">
         <div>
-          <h1>The Tic Tok Toe game</h1>
+          <h1 className="title">The Tic Tok Toe game</h1>
         </div>
-        <h2>Turn player: {typePlayer}</h2>
+        <div onClick={cionClick}>
+          <CoinFlip></CoinFlip>
+        </div>
+        <h2 className="title-turn">Turn player: {typePlayer}</h2>
         <div className="bnt">
           <button-component name="reset" onClick={handleClickRESETgame}>
             <div slot="compButton">Reset</div>
@@ -166,10 +180,10 @@ function isWin(bord1) {
     return player;
   }
 
-  //check if ther is a win in the main diagonal
+  //check if ther is a win in the second diagonal
   player = bord1[sqrtSizeBord - 1];
   win = true;
-  for (let i = sqrtSizeBord - 1; i < sqrtSizeBord * 2; i += sqrtSizeBord - 1) {
+  for (let i = sqrtSizeBord - 1; i <= sqrtSizeBord * 2; i += sqrtSizeBord - 1) {
     if (bord1[i] !== player) win = false;
   }
   if (player !== " " && win === true) {
@@ -193,4 +207,5 @@ function resetGame(msg, numsWinX, numsTie, numsWinO) {
   window.location.reload();
 }
 
+export { typePlayer };
 export default App;
