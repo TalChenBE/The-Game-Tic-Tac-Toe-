@@ -31,7 +31,7 @@ const style = `<style>
   }
 
   .place-button:hover {
-    /*background-color: rgba(12, 12, 129, 0.384);*/
+    background-color: rgba(12, 12, 129, 0.384);
     font-style: italic;
     
   }

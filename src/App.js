@@ -9,8 +9,9 @@ import OnePlace from "./components/OnePlace";
 import * as getFunc from "./components/OnePlace";
 import CoinFlip from "./components/CoinFlip.js";
 import * as getStartPlayer from "./components/CoinFlip";
+import * as getTypePlayer from "./Start";
 import PlayerX from "./PlayerX";
-import { Start } from "./Start";
+import Start from "./Start";
 
 var bord = getBord.bord,
   // typePlayer,
@@ -26,8 +27,9 @@ function App(props) {
   var saveTie = JSON.parse(localStorage.getItem("saveTie")),
     savescoreX = JSON.parse(localStorage.getItem("SavescoreX")),
     savescoreO = JSON.parse(localStorage.getItem("SavescoreO"));
-
-  const [typePlayer, setPlayer] = useState(props.typePlayer);
+  namep = props.typePlayer;
+  const [typePlayer, setTypePlayer] = useState(props.typePlayer);
+  console.log("typePlayer in APP: " + typePlayer);
   const [numsWinX, setNumsWinX] = useState(savescoreX ?? initScoreX ?? 0);
   const [numsTie, setNumsTie] = useState(saveTie ?? initTie ?? 0);
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
@@ -38,17 +40,16 @@ function App(props) {
     if (bord[index] === typePlayer) {
       if (typePlayer === "X") {
         // typePlayer = "O";
+        namep = "O";
         console.log("im x");
-        setPlayer("O");
-        console.log(typePlayer);
+        setTypePlayer("O");
       } else {
         console.log("im o");
-
         // typePlayer = "X";
-
-        setPlayer("X");
-        console.log(typePlayer);
+        namep = "X";
+        setTypePlayer("X");
       }
+      console.log("typePlayer in handeleClick: " + typePlayer);
     }
 
     numClicked = getBord.numClicked;
