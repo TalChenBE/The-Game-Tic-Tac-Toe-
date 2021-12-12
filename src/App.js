@@ -2,29 +2,34 @@ import "./App.css";
 import React from "react";
 import { useState } from "react";
 import CoinFlip from "./components/CoinFlip.js";
-import * as getStartPlayer from "./components/CoinFlip";
 import Main from "./Main";
 import ReactDOM from "react-dom";
-
-let typePlayer;
+import ButtonCom from "./components/ButtonCom";
 
 function App() {
   const [show, setShow] = useState(false);
+  const [typePlayer, setTypePlayer] = useState("X");
+
   function coinClick() {
     setTimeout(() => {
-      typePlayer = getStartPlayer.player;
-      console.log(typePlayer);
       setShow(true);
     }, 3200);
+  }
+  function handleClickRESTOREgame() {
+    handleClick(typePlayer);
   }
   return (
     <div className="App">
       <div>
         <h1 className="title">The Tic Tac Toe game</h1>
       </div>
+
       <div onClick={coinClick}>
-        <CoinFlip></CoinFlip>
+        <CoinFlip
+          changePlayer={(typePlayer) => setTypePlayer(typePlayer)}
+        ></CoinFlip>
       </div>
+
       <div
         className="link"
         onClick={() => {

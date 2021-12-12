@@ -1,24 +1,6 @@
 import "./OnePlace.css";
-import * as getPlayer from "../../Main.js";
-import * as getSizeBord from "./GridGame";
 
 const template = document.createElement("template");
-
-var typePlayer,
-  numClicked = 0,
-  index,
-  initBord = localStorage.getItem("bord");
-initBord = JSON.parse(initBord);
-const sizeBord = getSizeBord.sizeBord;
-
-var emptyBord = [];
-for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
-emptyBord[sizeBord] = "T";
-
-const bord = initBord ?? emptyBord;
-
-var index;
-
 const style = `<style>
 .place-button {
     color: white;
@@ -41,19 +23,35 @@ const style = `<style>
   }
 </style>`;
 
+let typePlayer,
+  sizeBord = 9,
+  numClicked = 0,
+  index,
+  player1,
+  player2,
+  nextPlayer,
+  emptyBord = [],
+  initBord = localStorage.getItem("bord");
+
+initBord = JSON.parse(initBord);
+
+for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
+emptyBord[sizeBord] = "T";
+
+const bord = initBord ?? emptyBord;
+
 function setPlayerTypePlace(player) {
   typePlayer = player;
-  // this.nextPlayer = nextPlayer;
 }
 
-let player1, player2, nextPlayer;
 class OnePlace extends HTMLElement {
   constructor() {
     super();
     index = parseInt(this.getAttribute("name"), 10);
     typePlayer = this.getAttribute("typePlayer");
-    // player1 = this.getAttribute("player1");
-    // player2 = this.getAttribute("player2");
+    player1 = this.getAttribute("player1");
+    player2 = this.getAttribute("player2");
+    sizeBord = this.getAttribute("sizeBord");
     template.innerHTML =
       style +
       ` <button id="placeButton" class="place-button">
@@ -69,6 +67,8 @@ class OnePlace extends HTMLElement {
     index = this.getAttribute("name");
     if (bord[index] === " ") {
       bord[index] = typePlayer;
+      if (typePlayer === player1) nextPlayer = player2;
+      else nextPlayer = player1;
       if (numClicked === sizeBord - 1) {
         setTimeout(() => {
           bord[sizeBord] = "T";
@@ -93,5 +93,5 @@ class OnePlace extends HTMLElement {
 }
 window.customElements.define("place-component", OnePlace);
 
-export { bord, numClicked, sizeBord, setPlayerTypePlace, index };
+export { bord, numClicked, nextPlayer, sizeBord, setPlayerTypePlace };
 export default OnePlace;

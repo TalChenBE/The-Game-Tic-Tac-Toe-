@@ -1,25 +1,18 @@
 import "./Main.css";
-// import { useState, useEffect, useRef } from "react";
-import { useState } from "react";
-import * as getBord from "./components/board/OnePlace";
-import React from "react";
+import React, { useState } from "react";
+import * as getVariables from "./components/board/OnePlace";
+import * as getFunction from "./components/board/OnePlace";
 import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
 import GridGame from "./components/board/GridGame.js";
-import OnePlace from "./components/board/OnePlace";
-import * as getFunc from "./components/board/OnePlace";
-import CoinFlip from "./components/CoinFlip.js";
-import * as getStartPlayer from "./components/CoinFlip";
-import * as getTypePlayer from "./App";
 
-let bord = getBord.bord,
+let bord = getVariables.bord,
   namePlayer,
   numClicked,
   playerX = "X",
   playerO = "O";
 
-const sizeBord = getBord.sizeBord;
-
+const sizeBord = getVariables.sizeBord;
 function Main(props) {
   var initTie = JSON.parse(localStorage.getItem("tie"));
   var initScoreX = JSON.parse(localStorage.getItem("scoreX"));
@@ -35,19 +28,11 @@ function Main(props) {
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
 
   function handleClick() {
-    namePlayer = typePlayer;
     let flag = true;
-    let index = getFunc.index;
-    if (bord[index] === namePlayer) {
-      if (namePlayer === playerX) {
-        namePlayer = playerO;
-      } else {
-        namePlayer = playerX;
-      }
-      setTypePlayer(namePlayer);
-    }
+    namePlayer = getVariables.nextPlayer;
+    setTypePlayer(namePlayer);
 
-    numClicked = getBord.numClicked;
+    numClicked = getVariables.numClicked;
     var retval = isWin(bord);
     if (retval === playerX || retval === playerO) {
       if (retval === playerX) {
@@ -76,7 +61,7 @@ function Main(props) {
   }
 
   const listener = () => {
-    getFunc.setPlayerTypePlace(namePlayer);
+    getFunction.setPlayerTypePlace(namePlayer);
   };
   React.useEffect(() => {
     window.addEventListener("click", listener);
@@ -93,10 +78,7 @@ function Main(props) {
   }
 
   function handleClickSAVEgame() {
-    localStorage.setItem("bord", JSON.stringify(bord));
-    localStorage.setItem("tie", JSON.stringify(numsTie));
-    localStorage.setItem("scoreX", JSON.stringify(numsWinX));
-    localStorage.setItem("scoreO", JSON.stringify(numsWinO));
+    setLocalStorage(numsWinX, numsTie, numsWinO);
   }
 
   return (
@@ -119,15 +101,12 @@ function Main(props) {
       <div className="bord" onClick={handleClick}>
         <grid-game
           id="gridi"
-          // player1={playerO}
-          // player2={playerX}
+          player1={playerO}
+          player2={playerX}
           name={typePlayer}
+          sizeBord={sizeBord}
           className="grid-game"
-        >
-          {/* <div slot="px" value={typePlayer}>
-            {typePlayer}
-          </div> */}
-        </grid-game>
+        ></grid-game>
       </div>
       <div></div>
       <users-scores className="userScores">
@@ -203,13 +182,16 @@ function resetGame(msg, numsWinX, numsTie, numsWinO) {
   alert(msg);
   bord = bord.map(() => " ");
   bord[sizeBord] = "T";
-  localStorage.setItem("bord", JSON.stringify(bord));
+  setLocalStorage(numsWinX, numsTie, numsWinO);
   bord[sizeBord] = "F";
   numClicked = 0;
-  localStorage.setItem("SavescoreX", JSON.stringify(numsWinX));
-  localStorage.setItem("saveTie", JSON.stringify(numsTie));
-  localStorage.setItem("SavescoreO", JSON.stringify(numsWinO));
   window.location.reload();
 }
 
+function setLocalStorage(numsWinX, numsTie, numsWinO) {
+  localStorage.setItem("bord", JSON.stringify(bord));
+  localStorage.setItem("SavescoreX", JSON.stringify(numsWinX));
+  localStorage.setItem("saveTie", JSON.stringify(numsTie));
+  localStorage.setItem("SavescoreO", JSON.stringify(numsWinO));
+}
 export default Main;
