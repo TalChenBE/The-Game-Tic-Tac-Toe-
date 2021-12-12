@@ -1,5 +1,6 @@
 import "./OnePlace.css";
 import * as getSizeBord from "./GridGame";
+// import { type } from "jquery";
 
 const template = document.createElement("template");
 
@@ -8,15 +9,16 @@ var typePlayer,
   index,
   initBord = localStorage.getItem("bord");
 initBord = JSON.parse(initBord);
-const sizeBord = getSizeBord.sizeBord;
+let sizeBord = 9;
 
 var emptyBord = [];
 for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
 emptyBord[sizeBord] = "T";
 
 const bord = initBord ?? emptyBord;
-
-var index;
+console.log("OnePlace bord:", bord);
+console.log("OnePlace sizeBord:", sizeBord);
+var index, player1, player2, nextPlayer;
 
 const style = `<style>
 .place-button {
@@ -42,17 +44,16 @@ const style = `<style>
 
 function setPlayerTypePlace(player) {
   typePlayer = player;
-  // this.nextPlayer = nextPlayer;
 }
 
-// let player1, player2, nextPlayer;
 class OnePlace extends HTMLElement {
   constructor() {
     super();
     index = parseInt(this.getAttribute("name"), 10);
     typePlayer = this.getAttribute("typePlayer");
-    // player1 = this.getAttribute("player1");
-    // player2 = this.getAttribute("player2");
+    player1 = this.getAttribute("player1");
+    player2 = this.getAttribute("player2");
+    sizeBord = this.getAttribute("sizeBord");
     template.innerHTML =
       style +
       ` <button id="placeButton" class="place-button">
@@ -68,6 +69,8 @@ class OnePlace extends HTMLElement {
     index = this.getAttribute("name");
     if (bord[index] === " ") {
       bord[index] = typePlayer;
+      if (typePlayer === player1) nextPlayer = player2;
+      else nextPlayer = player1;
       if (numClicked === sizeBord - 1) {
         setTimeout(() => {
           bord[sizeBord] = "T";
@@ -92,5 +95,5 @@ class OnePlace extends HTMLElement {
 }
 window.customElements.define("place-component", OnePlace);
 
-export { bord, numClicked, sizeBord, setPlayerTypePlace, index };
+export { bord, numClicked, setPlayerTypePlace, nextPlayer };
 export default OnePlace;

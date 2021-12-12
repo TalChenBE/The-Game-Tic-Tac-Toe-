@@ -5,6 +5,7 @@ import * as getFunction from "./components/board/OnePlace";
 import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
 import GridGame from "./components/board/GridGame.js";
+// import OnePlace from "./components/board/OnePlace.js";
 import PopupMsg from "./PopupMsg.js";
 
 let bord = getBord.bord,
@@ -13,8 +14,9 @@ let bord = getBord.bord,
   playerX = "X",
   playerO = "O";
 
-const sizeBord = getBord.sizeBord;
-
+// const sizeBord = getBord.sizeBord;
+const sizeBord = 9;
+console.log("Main bord:", bord);
 function Main(props) {
   var initTie = JSON.parse(localStorage.getItem("tie"));
   var initScoreX = JSON.parse(localStorage.getItem("scoreX"));
@@ -32,15 +34,8 @@ function Main(props) {
   function handleClick() {
     namePlayer = typePlayer;
     let flag = true;
-    let index = getFunction.index;
-    if (bord[index] === namePlayer) {
-      if (namePlayer === playerX) {
-        namePlayer = playerO;
-      } else {
-        namePlayer = playerX;
-      }
-      setTypePlayer(namePlayer);
-    }
+    namePlayer = getFunction.nextPlayer;
+    setTypePlayer(namePlayer);
 
     numClicked = getFunction.numClicked;
     var retval = isWin(bord);
@@ -114,9 +109,10 @@ function Main(props) {
       <div className="bord" onClick={handleClick}>
         <grid-game
           id="gridi"
-          // player1={playerO}
-          // player2={playerX}
+          player1={playerO}
+          player2={playerX}
           name={typePlayer}
+          sizeBord={sizeBord}
           className="grid-game"
         >
           {/* <div slot="px" value={typePlayer}>
