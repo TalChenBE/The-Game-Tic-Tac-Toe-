@@ -12,12 +12,16 @@ import * as getStartPlayer from "./components/CoinFlip";
 import * as getTypePlayer from "./Start";
 import PlayerX from "./PlayerX";
 import Start from "./Start";
+import { type } from "jquery";
 
 var bord = getBord.bord,
   // typePlayer,
-  namep,
+  namePlayer,
   numClicked;
 const sizeBord = getBord.sizeBord;
+
+let playerX = "X",
+  playerO = "O";
 
 function App(props) {
   var initTie = JSON.parse(localStorage.getItem("tie"));
@@ -27,7 +31,7 @@ function App(props) {
   var saveTie = JSON.parse(localStorage.getItem("saveTie")),
     savescoreX = JSON.parse(localStorage.getItem("SavescoreX")),
     savescoreO = JSON.parse(localStorage.getItem("SavescoreO"));
-  namep = props.typePlayer;
+  // namePlayer = props.typePlayer;
   const [typePlayer, setTypePlayer] = useState(props.typePlayer);
   console.log("typePlayer in APP: " + typePlayer);
   const [numsWinX, setNumsWinX] = useState(savescoreX ?? initScoreX ?? 0);
@@ -35,21 +39,36 @@ function App(props) {
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
 
   function handleClick() {
+    namePlayer = typePlayer;
     let flag = true;
     let index = getFunc.index;
-    if (bord[index] === typePlayer) {
-      if (typePlayer === "X") {
+    console.log(
+      "outside : bord[index] ",
+      bord[index],
+      "typePlayer: ",
+      typePlayer,
+      "namePlayer: ",
+      namePlayer
+    );
+    if (bord[index] === namePlayer) {
+      if (namePlayer === "X") {
         // typePlayer = "O";
-        namep = "O";
+        namePlayer = "O";
         console.log("im x");
-        setTypePlayer("O");
+        // setTypePlayer("O");
       } else {
         console.log("im o");
         // typePlayer = "X";
-        namep = "X";
-        setTypePlayer("X");
+        namePlayer = "X";
+        // setTypePlayer("X");
       }
-      console.log("typePlayer in handeleClick: " + typePlayer);
+      setTypePlayer(namePlayer);
+      console.log(
+        "handleClick :typePlayer ",
+        typePlayer,
+        "namePlayer: ",
+        namePlayer
+      );
     }
 
     numClicked = getBord.numClicked;
@@ -81,11 +100,17 @@ function App(props) {
   }
 
   const listener = () => {
-    getFunc.setPlayerTypePlace(typePlayer);
+    console.log(
+      "handleClick : typePlayer ",
+      typePlayer,
+      "namePlayer: ",
+      namePlayer
+    );
+    getFunc.setPlayerTypePlace(namePlayer);
   };
   React.useEffect(() => {
     window.addEventListener("click", listener);
-  }, [typePlayer]);
+  }, [namePlayer]);
 
   function handleClickRESETgame() {
     bord = bord.map(() => " ");
@@ -124,9 +149,15 @@ function App(props) {
       <div className="bord" onClick={handleClick}>
         <grid-game
           id="gridi"
+          // player1={playerO}
+          // player2={playerX}
           name={typePlayer}
           className="grid-game"
-        ></grid-game>
+        >
+          {/* <div slot="px" value={typePlayer}>
+            {typePlayer}
+          </div> */}
+        </grid-game>
       </div>
       <div></div>
       <users-scores className="userScores">

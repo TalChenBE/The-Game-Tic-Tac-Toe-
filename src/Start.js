@@ -31,15 +31,6 @@ function Start() {
       >
         Start Playing
       </div>
-      {/* <a
-        href="/App"
-        className="link"
-        // onClick={() => {
-        //   handleClick(typePlayer);
-        // }}
-      > */}
-      {/* Start Playing
-      </a> */}
     </div>
   );
 }
@@ -48,10 +39,8 @@ const handleClick = (typePlayer) => {
     <React.StrictMode>
       <App typePlayer={typePlayer} />
     </React.StrictMode>,
-
     document.getElementById("root")
   );
 };
 
-//export { typePlayer };
 export default Start;

@@ -43,14 +43,17 @@ const style = `<style>
 
 function setPlayerTypePlace(player) {
   typePlayer = player;
+  // this.nextPlayer = nextPlayer;
 }
 
+let player1, player2, nextPlayer;
 class OnePlace extends HTMLElement {
   constructor() {
     super();
     index = parseInt(this.getAttribute("name"), 10);
     typePlayer = this.getAttribute("typePlayer");
-
+    // player1 = this.getAttribute("player1");
+    // player2 = this.getAttribute("player2");
     template.innerHTML =
       style +
       ` <button id="placeButton" class="place-button">
