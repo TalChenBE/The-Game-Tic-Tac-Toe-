@@ -57,3 +57,7 @@
   text-decoration: white underline;
   font-style: italic;
 }
+
+.link {
+  font-size: 20px;
+}

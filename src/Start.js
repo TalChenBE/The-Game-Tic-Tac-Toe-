@@ -1,16 +1,20 @@
 import "./Start.css";
 import React from "react";
+import { useState } from "react";
 import CoinFlip from "./components/CoinFlip.js";
 import * as getStartPlayer from "./components/CoinFlip";
 import App from "./App";
 import ReactDOM from "react-dom";
 
 let typePlayer;
+
 function Start() {
+  const [show, setShow] = useState(false);
   function coinClick() {
     setTimeout(() => {
       typePlayer = getStartPlayer.player;
       console.log(typePlayer);
+      setShow(true);
     }, 3200);
   }
   return (
@@ -26,6 +30,7 @@ function Start() {
         onClick={() => {
           handleClick(typePlayer);
         }}
+        style={{ display: show ? "block" : "none" }}
       >
         Start Playing
       </div>
