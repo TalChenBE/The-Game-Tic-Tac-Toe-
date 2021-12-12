@@ -1,22 +1,6 @@
 import "./OnePlace.css";
-import * as getSizeBord from "./GridGame";
 
 const template = document.createElement("template");
-
-var typePlayer,
-  numClicked = 0,
-  index,
-  initBord = localStorage.getItem("bord");
-initBord = JSON.parse(initBord);
-let sizeBord = 9;
-
-var emptyBord = [];
-for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
-emptyBord[sizeBord] = "T";
-
-const bord = initBord ?? emptyBord;
-var index, player1, player2, nextPlayer;
-
 const style = `<style>
 .place-button {
     color: white;
@@ -38,6 +22,23 @@ const style = `<style>
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
 </style>`;
+
+let typePlayer,
+  sizeBord = 9,
+  numClicked = 0,
+  index,
+  player1,
+  player2,
+  nextPlayer,
+  emptyBord = [],
+  initBord = localStorage.getItem("bord");
+
+initBord = JSON.parse(initBord);
+
+for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
+emptyBord[sizeBord] = "T";
+
+const bord = initBord ?? emptyBord;
 
 function setPlayerTypePlace(player) {
   typePlayer = player;
@@ -92,5 +93,5 @@ class OnePlace extends HTMLElement {
 }
 window.customElements.define("place-component", OnePlace);
 
-export { bord, numClicked, setPlayerTypePlace, nextPlayer, sizeBord };
+export { bord, numClicked, nextPlayer, sizeBord, setPlayerTypePlace };
 export default OnePlace;

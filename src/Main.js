@@ -1,21 +1,18 @@
 import "./Main.css";
 import React, { useState } from "react";
-import * as getBord from "./components/board/OnePlace";
+import * as getVariables from "./components/board/OnePlace";
 import * as getFunction from "./components/board/OnePlace";
 import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
 import GridGame from "./components/board/GridGame.js";
-// import OnePlace from "./components/board/OnePlace.js";
-import PopupMsg from "./PopupMsg.js";
 
-let bord = getBord.bord,
+let bord = getVariables.bord,
   namePlayer,
   numClicked,
   playerX = "X",
   playerO = "O";
 
-const sizeBord = getBord.sizeBord;
-// const sizeBord = 9;
+const sizeBord = getVariables.sizeBord;
 function Main(props) {
   var initTie = JSON.parse(localStorage.getItem("tie"));
   var initScoreX = JSON.parse(localStorage.getItem("scoreX"));
@@ -31,12 +28,11 @@ function Main(props) {
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
 
   function handleClick() {
-    namePlayer = typePlayer;
     let flag = true;
-    namePlayer = getFunction.nextPlayer;
+    namePlayer = getVariables.nextPlayer;
     setTypePlayer(namePlayer);
 
-    numClicked = getFunction.numClicked;
+    numClicked = getVariables.numClicked;
     var retval = isWin(bord);
     if (retval === playerX || retval === playerO) {
       if (retval === playerX) {
@@ -82,10 +78,7 @@ function Main(props) {
   }
 
   function handleClickSAVEgame() {
-    localStorage.setItem("bord", JSON.stringify(bord));
-    localStorage.setItem("tie", JSON.stringify(numsTie));
-    localStorage.setItem("scoreX", JSON.stringify(numsWinX));
-    localStorage.setItem("scoreO", JSON.stringify(numsWinO));
+    setLocalStorage(numsWinX, numsTie, numsWinO);
   }
 
   return (
@@ -113,11 +106,7 @@ function Main(props) {
           name={typePlayer}
           sizeBord={sizeBord}
           className="grid-game"
-        >
-          {/* <div slot="px" value={typePlayer}>
-            {typePlayer}
-          </div> */}
-        </grid-game>
+        ></grid-game>
       </div>
       <div></div>
       <users-scores className="userScores">
@@ -131,8 +120,6 @@ function Main(props) {
           {numsWinO}
         </div>
       </users-scores>
-
-      {/* <PopupMsg></PopupMsg> */}
     </div>
   );
 }
@@ -195,13 +182,16 @@ function resetGame(msg, numsWinX, numsTie, numsWinO) {
   alert(msg);
   bord = bord.map(() => " ");
   bord[sizeBord] = "T";
-  localStorage.setItem("bord", JSON.stringify(bord));
+  setLocalStorage(numsWinX, numsTie, numsWinO);
   bord[sizeBord] = "F";
   numClicked = 0;
-  localStorage.setItem("SavescoreX", JSON.stringify(numsWinX));
-  localStorage.setItem("saveTie", JSON.stringify(numsTie));
-  localStorage.setItem("SavescoreO", JSON.stringify(numsWinO));
   window.location.reload();
 }
 
+function setLocalStorage(numsWinX, numsTie, numsWinO) {
+  localStorage.setItem("bord", JSON.stringify(bord));
+  localStorage.setItem("SavescoreX", JSON.stringify(numsWinX));
+  localStorage.setItem("saveTie", JSON.stringify(numsTie));
+  localStorage.setItem("SavescoreO", JSON.stringify(numsWinO));
+}
 export default Main;
