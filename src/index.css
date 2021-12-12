@@ -2,45 +2,35 @@
   margin: 0;
   padding: 0;
   color: white;
-  background-color: black;
 }
 
-.App {
-  border-top: 10px solid rgba(0, 38, 255, 0.349);
+.Main {
   margin: auto;
   width: 100%;
-  height: 100%;
-  padding: 30px;
+  height: 865px;
+  padding: 100px 0;
+  background: #000428; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to top,
+    #004e92,
+    #000428
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to top,
+    #004e92,
+    #000428
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .heder {
   text-align: center;
   margin-bottom: 50px;
 }
-/* 
-.bord {
-  margin: auto;
-  width: 310px;
-  height: 310px;
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 1fr);
-  column-gap: 5px;
-  row-gap: 5px;
-  align-items: start;
-  background-color: white;
-} */
-.grid-game {
-  margin: auto;
-  width: 310px;
-  height: 310px;
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 1fr);
-  column-gap: 5px;
-  row-gap: 5px;
-  align-items: start;
-  background-color: white;
+.title {
+  font: italic small-caps bold 3em cursive;
+}
+.title-turn {
+  font: italic 2em "Fira Sans", serif;
 }
 
 .infoSrore {
@@ -57,6 +47,6 @@
 }
 .bnt {
   display: flex;
-  margin-left: 46%;
+  margin-left: 43%;
   margin-top: 50px;
 }

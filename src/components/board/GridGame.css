@@ -1,0 +1,19 @@
+.body {
+  margin: auto;
+  display: grid;
+  /* for 3X3 */
+  width: 310px;
+  height: 310px;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 1fr);
+
+  /* for 4X4 */
+  /* width: 410px;
+  height: 410px;
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: repeat(4, 1fr); */
+  column-gap: 5px;
+  row-gap: 5px;
+  align-items: start;
+  background-color: rgba(255, 255, 255, 0.1);
+}

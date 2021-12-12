@@ -1,0 +1,20 @@
+.place-button {
+  color: white;
+  font-size: xx-large;
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 0, 0, 0.644);
+  border: none;
+  font-weight: bold;
+}
+
+.place-button:hover {
+  background-color: rgba(12, 12, 129, 0.384);
+  font-style: italic;
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.322);
+}
+
+.place-button:focus {
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}

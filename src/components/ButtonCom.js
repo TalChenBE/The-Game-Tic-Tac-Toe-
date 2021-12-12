@@ -6,10 +6,12 @@ template.innerHTML = `
      border-color: white;
      border-radius: 5px;
  		 padding: 2px 2px;
-     width: 50px;
+     width: 70px;
      height: 50px; 
      margin-right: 10px;    
      font-weight: bold;
+     background-color: #000428;
+     border: thick double rgba(255, 255, 255, 0.4);
   }
 </style>
   <div class="body">
