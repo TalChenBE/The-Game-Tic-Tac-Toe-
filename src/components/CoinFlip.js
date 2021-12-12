@@ -3,7 +3,9 @@ import { useState } from "react";
 
 import "./CoinFlip.css";
 
-let player;
+let player,
+  playerX = "X",
+  playerO = "O";
 
 $(document).ready(function ($) {
   $("#coin").on("click", function () {
@@ -12,11 +14,11 @@ $(document).ready(function ($) {
     setTimeout(function () {
       if (flipResult <= 0.5) {
         $("#coin").addClass("heads");
-        player = "X";
+        player = playerX;
         console.log("it is head ~ " + player);
       } else {
         $("#coin").addClass("tails");
-        player = "O";
+        player = playerO;
         console.log("it is tails ~ " + player);
       }
     }, 100);

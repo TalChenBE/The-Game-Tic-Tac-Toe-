@@ -1,11 +1,9 @@
 import "./Start.css";
-import { useState, useEffect, useRef } from "react";
 import React from "react";
 import CoinFlip from "./components/CoinFlip.js";
 import * as getStartPlayer from "./components/CoinFlip";
 import App from "./App";
 import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 
 let typePlayer;
 function Start() {

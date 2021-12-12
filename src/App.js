@@ -1,27 +1,24 @@
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
-import * as getBord from "./components/OnePlace";
+// import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import * as getBord from "./components/board/OnePlace";
 import React from "react";
 import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
-import GridGame from "./components/GridGame.js";
-import OnePlace from "./components/OnePlace";
-import * as getFunc from "./components/OnePlace";
+import GridGame from "./components/board/GridGame.js";
+import OnePlace from "./components/board/OnePlace";
+import * as getFunc from "./components/board/OnePlace";
 import CoinFlip from "./components/CoinFlip.js";
 import * as getStartPlayer from "./components/CoinFlip";
 import * as getTypePlayer from "./Start";
-import PlayerX from "./PlayerX";
-import Start from "./Start";
-import { type } from "jquery";
 
-var bord = getBord.bord,
-  // typePlayer,
+let bord = getBord.bord,
   namePlayer,
-  numClicked;
-const sizeBord = getBord.sizeBord;
-
-let playerX = "X",
+  numClicked,
+  playerX = "X",
   playerO = "O";
+
+const sizeBord = getBord.sizeBord;
 
 function App(props) {
   var initTie = JSON.parse(localStorage.getItem("tie"));
@@ -31,9 +28,8 @@ function App(props) {
   var saveTie = JSON.parse(localStorage.getItem("saveTie")),
     savescoreX = JSON.parse(localStorage.getItem("SavescoreX")),
     savescoreO = JSON.parse(localStorage.getItem("SavescoreO"));
-  // namePlayer = props.typePlayer;
+
   const [typePlayer, setTypePlayer] = useState(props.typePlayer);
-  console.log("typePlayer in APP: " + typePlayer);
   const [numsWinX, setNumsWinX] = useState(savescoreX ?? initScoreX ?? 0);
   const [numsTie, setNumsTie] = useState(saveTie ?? initTie ?? 0);
   const [numsWinO, setNumsWinO] = useState(savescoreO ?? initScoreO ?? 0);
@@ -42,39 +38,19 @@ function App(props) {
     namePlayer = typePlayer;
     let flag = true;
     let index = getFunc.index;
-    console.log(
-      "outside : bord[index] ",
-      bord[index],
-      "typePlayer: ",
-      typePlayer,
-      "namePlayer: ",
-      namePlayer
-    );
     if (bord[index] === namePlayer) {
-      if (namePlayer === "X") {
-        // typePlayer = "O";
-        namePlayer = "O";
-        console.log("im x");
-        // setTypePlayer("O");
+      if (namePlayer === playerX) {
+        namePlayer = playerO;
       } else {
-        console.log("im o");
-        // typePlayer = "X";
-        namePlayer = "X";
-        // setTypePlayer("X");
+        namePlayer = playerX;
       }
       setTypePlayer(namePlayer);
-      console.log(
-        "handleClick :typePlayer ",
-        typePlayer,
-        "namePlayer: ",
-        namePlayer
-      );
     }
 
     numClicked = getBord.numClicked;
     var retval = isWin(bord);
-    if (retval === "X" || retval === "O") {
-      if (retval === "X") {
+    if (retval === playerX || retval === playerO) {
+      if (retval === playerX) {
         resetGame(
           `Congratulations ${retval} won!`,
           numsWinX + 1,
@@ -100,12 +76,6 @@ function App(props) {
   }
 
   const listener = () => {
-    console.log(
-      "handleClick : typePlayer ",
-      typePlayer,
-      "namePlayer: ",
-      namePlayer
-    );
     getFunc.setPlayerTypePlace(namePlayer);
   };
   React.useEffect(() => {
@@ -215,7 +185,11 @@ function isWin(bord1) {
   //check if ther is a win in the second diagonal
   player = bord1[sqrtSizeBord - 1];
   win = true;
-  for (let i = sqrtSizeBord - 1; i <= sqrtSizeBord * 2; i += sqrtSizeBord - 1) {
+  for (
+    let i = sqrtSizeBord - 1;
+    i <= sqrtSizeBord * (sqrtSizeBord - 1);
+    i += sqrtSizeBord - 1
+  ) {
     if (bord1[i] !== player) win = false;
   }
   if (player !== " " && win === true) {
@@ -239,5 +213,4 @@ function resetGame(msg, numsWinX, numsTie, numsWinO) {
   window.location.reload();
 }
 
-// export { typePlayer };
 export default App;
