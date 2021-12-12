@@ -29,5 +29,5 @@ function Place(props) {
     </button>
   );
 }
-export { bord, numClicked, sizeBord };
+// export { bord, numClicked, sizeBord };
 export default Place;

@@ -1,5 +1,4 @@
 import "./OnePlace.css";
-import * as getPlayer from "../../Main.js";
 import * as getSizeBord from "./GridGame";
 
 const template = document.createElement("template");
@@ -46,7 +45,7 @@ function setPlayerTypePlace(player) {
   // this.nextPlayer = nextPlayer;
 }
 
-let player1, player2, nextPlayer;
+// let player1, player2, nextPlayer;
 class OnePlace extends HTMLElement {
   constructor() {
     super();

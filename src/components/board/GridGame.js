@@ -1,6 +1,3 @@
-// import * as getBord from "./components/Place";
-import * as getPlayer from "../../Main";
-import OnePlace from "./OnePlace";
 import "./GridGame.css";
 
 var initBord = localStorage.getItem("bord");

@@ -1,16 +1,11 @@
 import "./Main.css";
-// import { useState, useEffect, useRef } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import * as getBord from "./components/board/OnePlace";
-import React from "react";
+import * as getFunction from "./components/board/OnePlace";
 import Scores from "./components/Scores";
 import ButtonCom from "./components/ButtonCom";
 import GridGame from "./components/board/GridGame.js";
-import OnePlace from "./components/board/OnePlace";
-import * as getFunc from "./components/board/OnePlace";
-import CoinFlip from "./components/CoinFlip.js";
-import * as getStartPlayer from "./components/CoinFlip";
-import * as getTypePlayer from "./App";
+import PopupMsg from "./PopupMsg.js";
 
 let bord = getBord.bord,
   namePlayer,
@@ -37,7 +32,7 @@ function Main(props) {
   function handleClick() {
     namePlayer = typePlayer;
     let flag = true;
-    let index = getFunc.index;
+    let index = getFunction.index;
     if (bord[index] === namePlayer) {
       if (namePlayer === playerX) {
         namePlayer = playerO;
@@ -47,7 +42,7 @@ function Main(props) {
       setTypePlayer(namePlayer);
     }
 
-    numClicked = getBord.numClicked;
+    numClicked = getFunction.numClicked;
     var retval = isWin(bord);
     if (retval === playerX || retval === playerO) {
       if (retval === playerX) {
@@ -76,7 +71,7 @@ function Main(props) {
   }
 
   const listener = () => {
-    getFunc.setPlayerTypePlace(namePlayer);
+    getFunction.setPlayerTypePlace(namePlayer);
   };
   React.useEffect(() => {
     window.addEventListener("click", listener);
@@ -141,6 +136,8 @@ function Main(props) {
           {numsWinO}
         </div>
       </users-scores>
+
+      {/* <PopupMsg></PopupMsg> */}
     </div>
   );
 }

@@ -1,6 +1,4 @@
 import $ from "jquery";
-// import { useState } from "react";
-
 import "./CoinFlip.css";
 
 let player,
