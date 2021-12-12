@@ -2,10 +2,9 @@
   margin: 0;
   padding: 0;
   color: white;
-  /* background-color: black; */
 }
 
-.App {
+.Main {
   margin: auto;
   width: 100%;
   height: 865px;
@@ -33,31 +32,6 @@
 .title-turn {
   font: italic 2em "Fira Sans", serif;
 }
-/* 
-.bord {
-  margin: auto;
-  width: 310px;
-  height: 310px;
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 1fr);
-  column-gap: 5px;
-  row-gap: 5px;
-  align-items: start;
-  background-color: white;
-} */
-/* .grid-game {
-  margin: auto;
-  width: 310px;
-  height: 310px;
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-template-rows: repeat(3, 1fr);
-  column-gap: 5px;
-  row-gap: 5px;
-  align-items: start;
-  background-color: red;
-} */
 
 .infoSrore {
   margin: auto;

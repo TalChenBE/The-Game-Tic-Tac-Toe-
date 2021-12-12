@@ -1,5 +1,5 @@
 import "./OnePlace.css";
-import * as getPlayer from "../../App.js";
+import * as getPlayer from "../../Main.js";
 import * as getSizeBord from "./GridGame";
 
 const template = document.createElement("template");
