@@ -13,12 +13,11 @@ $(document).ready(function ($) {
       if (flipResult <= 0.5) {
         $("#coin").addClass("heads");
         player = playerX;
-        console.log("it is head ~ " + player);
       } else {
         $("#coin").addClass("tails");
         player = playerO;
-        console.log("it is tails ~ " + player);
       }
+      console.log("it is tails ~ " + player);
     }, 100);
   });
 });

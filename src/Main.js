@@ -14,9 +14,8 @@ let bord = getBord.bord,
   playerX = "X",
   playerO = "O";
 
-// const sizeBord = getBord.sizeBord;
-const sizeBord = 9;
-console.log("Main bord:", bord);
+const sizeBord = getBord.sizeBord;
+// const sizeBord = 9;
 function Main(props) {
   var initTie = JSON.parse(localStorage.getItem("tie"));
   var initScoreX = JSON.parse(localStorage.getItem("scoreX"));

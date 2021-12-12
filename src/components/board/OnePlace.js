@@ -1,6 +1,5 @@
 import "./OnePlace.css";
 import * as getSizeBord from "./GridGame";
-// import { type } from "jquery";
 
 const template = document.createElement("template");
 
@@ -16,8 +15,6 @@ for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
 emptyBord[sizeBord] = "T";
 
 const bord = initBord ?? emptyBord;
-console.log("OnePlace bord:", bord);
-console.log("OnePlace sizeBord:", sizeBord);
 var index, player1, player2, nextPlayer;
 
 const style = `<style>
@@ -95,5 +92,5 @@ class OnePlace extends HTMLElement {
 }
 window.customElements.define("place-component", OnePlace);
 
-export { bord, numClicked, setPlayerTypePlace, nextPlayer };
+export { bord, numClicked, setPlayerTypePlace, nextPlayer, sizeBord };
 export default OnePlace;

@@ -13,7 +13,6 @@ function App() {
   function coinClick() {
     setTimeout(() => {
       typePlayer = getStartPlayer.player;
-      console.log(typePlayer);
       setShow(true);
     }, 3200);
   }
