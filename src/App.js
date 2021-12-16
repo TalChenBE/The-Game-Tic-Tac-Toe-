@@ -4,7 +4,6 @@ import { useState } from "react";
 import CoinFlip from "./components/CoinFlip.js";
 import Main from "./Main";
 import ReactDOM from "react-dom";
-import ButtonCom from "./components/ButtonCom";
 
 function App() {
   const [show, setShow] = useState(false);
@@ -15,9 +14,7 @@ function App() {
       setShow(true);
     }, 3200);
   }
-  function handleClickRESTOREgame() {
-    handleClick(typePlayer);
-  }
+
   return (
     <div className="App">
       <div>

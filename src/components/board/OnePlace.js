@@ -38,6 +38,11 @@ initBord = JSON.parse(initBord);
 for (let i = 0; i < sizeBord; i++) emptyBord[i] = " ";
 emptyBord[sizeBord] = "T";
 
+if (initBord !== null) {
+  // if the board restor from local dtorege then update numClicked
+  for (let i = 0; i < sizeBord; i++) if (initBord[i] !== " ") numClicked++;
+}
+
 const bord = initBord ?? emptyBord;
 
 function setPlayerTypePlace(player) {
